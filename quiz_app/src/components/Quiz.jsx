@@ -5,7 +5,7 @@ import Question from "./Question.jsx";
 import QuestionTimer from "./QuestionTimer.jsx";
 
 export default function Quiz() {
-  const [answerState, setAnswerState] = useState("");
+  const [userAnswer, setUserAnswers] = useState([]);
 
   // keeps track of which question user is on
   // if user has answered 2 questions then the index of the next question will be 2 bc idx starts at 0
@@ -15,15 +15,16 @@ export default function Quiz() {
 
   const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = useCallback(function handleSelectAnswer(
-    selectedAnswer
-  ) {
-    setUserAnswers((prevUserAnswers) => {
-      // return an arr with all prev selected answers and att the newly selected answer at the end
-      return [...prevUserAnswers, selectedAnswer];
-    });
-  },
-  []);
+  const handleSelectAnswer = useCallback(
+    function handleSelectAnswer(selectedAnswer) {
+
+      setUserAnswers((prevUserAnswers) => {
+        // return an arr with all prev selected answers and att the newly selected answer at the end
+        return [...prevUserAnswers, selectedAnswer];
+      });
+
+    },
+    []);
 
   const handleSkipAnswer = useCallback(() => handleSelectAnswer(null), [
     handleSelectAnswer,
@@ -39,9 +40,10 @@ export default function Quiz() {
   }
 
   return (
-    <div className="quiz">
+    <div id="quiz">
       <Question
         key={activeQuestionIndex}
+        index={activeQuestionIndex}
         onSelectAnswer={handleSelectAnswer}
         onSkipAnswer={handleSkipAnswer}
       />
